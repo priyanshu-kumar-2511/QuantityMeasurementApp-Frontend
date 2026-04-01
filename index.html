@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantity Measurement</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     AUTH PAGE
+════════════════════════════════════════════ -->
+<div id="auth-page" class="page active">
+  <div class="auth-card">
+
+    <!-- Branding panel -->
+    <div class="auth-left">
+      <img src="icon.jpeg" alt="Quantity Measurement Icon">
+      <div class="brand">QUANTITY MEASUREMENT</div>
+    </div>
+
+    <!-- Forms panel -->
+    <div class="auth-right">
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-login"  onclick="Auth.switchTab('login')">LOGIN</button>
+        <button class="tab-btn"        id="tab-signup" onclick="Auth.switchTab('signup')">SIGNUP</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div class="auth-form active" id="form-login">
+        <div class="field-label">Email Id</div>
+        <div class="input-wrap">
+          <span class="icon">✉</span>
+          <input type="email" placeholder="Email Id" id="login-email">
+        </div>
+        <div class="field-label">Password</div>
+        <div class="input-wrap">
+          <span class="icon">🔒</span>
+          <input type="password" placeholder="Password" id="login-password">
+        </div>
+        <div class="forgot">Forgot password?</div>
+        <button class="submit-btn" onclick="Auth.login()">Login</button>
+        <div class="switch-link">Don't have an account? <a onclick="Auth.switchTab('signup')">Signup</a></div>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <div class="auth-form" id="form-signup">
+        <div class="field-label">Full Name</div>
+        <div class="input-wrap">
+          <span class="icon">👤</span>
+          <input type="text" placeholder="Full Name" id="signup-name">
+        </div>
+        <div class="field-label">Mobile No.</div>
+        <div class="input-wrap">
+          <span class="icon">📞</span>
+          <input type="tel" placeholder="Mobile Number" id="signup-mobile">
+        </div>
+        <div class="field-label">Email Id</div>
+        <div class="input-wrap">
+          <span class="icon">✉</span>
+          <input type="email" placeholder="Email Id" id="signup-email">
+        </div>
+        <div class="field-label">Password</div>
+        <div class="input-wrap">
+          <span class="icon">🔒</span>
+          <input type="password" placeholder="Password" id="signup-password">
+        </div>
+        <button class="submit-btn" onclick="Auth.signup()">Signup</button>
+        <div class="switch-link">Already have an account? <a onclick="Auth.switchTab('login')">Login</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     DASHBOARD PAGE
+════════════════════════════════════════════ -->
+<div id="dashboard-page" class="page">
+
+  <div class="header">
+    <span class="user-greeting" id="user-greeting"></span>
+    <h1>Welcome To Quantity Measurement</h1>
+    <button class="logout-btn" onclick="App.logout()">Logout</button>
+  </div>
+
+  <div class="dash-body">
+
+    <!-- ── TYPE SELECTOR ───────────────────── -->
+    <div class="section-label">Choose Type</div>
+    <div class="type-grid" id="type-grid">
+      <div class="type-card active" data-type="length">      <span class="type-icon">📏</span><span>Length</span></div>
+      <div class="type-card"        data-type="weight">      <span class="type-icon">⚖️</span><span>Weight</span></div>
+      <div class="type-card"        data-type="temperature"> <span class="type-icon">🌡️</span><span>Temperature</span></div>
+      <div class="type-card"        data-type="volume">      <span class="type-icon">🧴</span><span>Volume</span></div>
+    </div>
+
+    <!-- ── ACTION TABS ─────────────────────── -->
+    <div class="section-label">Choose Action</div>
+    <div class="action-tabs" id="action-tabs">
+      <button class="action-tab active" data-action="comparison">Comparison</button>
+      <button class="action-tab"        data-action="conversion">Conversion</button>
+      <button class="action-tab"        data-action="arithmetic">Arithmetic</button>
+    </div>
+
+    <!-- ── COMPARISON / CONVERSION PANEL ──── -->
+    <div id="dual-calc" class="calc-area">
+      <div class="calc-box">
+        <div class="calc-box-label" id="from-label">VALUE 1</div>
+        <input type="number" id="val-from" value="1">
+        <select id="unit-from"></select>
+      </div>
+      <div class="calc-box">
+        <div class="calc-box-label" id="to-label">VALUE 2</div>
+        <input type="number" id="val-to" value="1">
+        <select id="unit-to"></select>
+      </div>
+    </div>
+
+    <!-- ── ARITHMETIC PANEL (upgraded) ──────
+         Value A [Unit A]  OP  Value B [Unit B]  =  Result in [Unit R]
+    ─────────────────────────────────────────── -->
+    <div id="arith-calc" class="arith-area">
+
+      <!-- Row 1: inputs + operator -->
+      <div class="arith-row">
+
+        <!-- Value A + Unit A -->
+        <div class="arith-input-group">
+          <label class="arith-label">Value 1</label>
+          <input  class="arith-input" type="number" id="arith-a" value="1" placeholder="Value 1">
+          <select class="arith-unit-select" id="arith-unit-a"></select>
+        </div>
+
+        <!-- Operator -->
+        <div class="arith-op-wrap">
+          <label class="arith-label">Op</label>
+          <select class="arith-op-select" id="arith-op">
+            <option value="+">+</option>
+            <option value="-">−</option>
+            <option value="*">×</option>
+            <option value="/">÷</option>
+          </select>
+        </div>
+
+        <!-- Value B + Unit B -->
+        <div class="arith-input-group">
+          <label class="arith-label">Value 2</label>
+          <input  class="arith-input" type="number" id="arith-b" value="1" placeholder="Value 2">
+          <select class="arith-unit-select" id="arith-unit-b"></select>
+        </div>
+
+        <!-- Result unit -->
+        <div class="arith-result-unit-wrap">
+          <label class="arith-label">Result in</label>
+          <select class="arith-unit-select arith-result-unit" id="arith-unit-result"></select>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── ACTION BUTTON ───────────────────── -->
+    <button class="action-btn" id="main-action-btn" onclick="App.calculate()">Compare</button>
+
+    <!-- ── RESULT BOX ──────────────────────── -->
+    <div class="result-box" id="result-box">
+      <div class="result-label">Result</div>
+      <div class="result-value" id="result-value"></div>
+      <div class="result-note"  id="result-note"></div>
+    </div>
+
+    <!-- ── HISTORY PANEL ────────────────────── -->
+    <div class="history-header" id="history-header">
+      <div class="history-title">📋 Calculation History</div>
+      <button class="history-clear-btn" onclick="App.clearHistory()">Clear All</button>
+    </div>
+    <div class="history-list" id="history-list">
+      <!-- filled by JS -->
+    </div>
+
+  </div><!-- /.dash-body -->
+</div><!-- /#dashboard-page -->
+
+<!-- ── POPUP ───────────────────────────────────────────────── -->
+<div class="popup-overlay" id="popup-overlay">
+  <div class="popup-card">
+    <span class="popup-icon"    id="popup-icon">✅</span>
+    <div  class="popup-title"   id="popup-title">Success!</div>
+    <div  class="popup-message" id="popup-message"></div>
+    <button class="popup-ok-btn popup-ok-btn--success" id="popup-ok-btn" onclick="closePopup()">OK</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
