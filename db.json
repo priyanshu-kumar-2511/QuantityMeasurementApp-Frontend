@@ -1,0 +1,31 @@
+{
+  "users": [
+    {
+      "name": "Priyanshu Kumar",
+      "mobile": "6207344394",
+      "email": "kumarpriyanshu77828@gmail.com",
+      "password": "Abc@1234",
+      "id": 1
+    }
+  ],
+  "history": [
+    {
+      "userId": 1,
+      "type": "temperature",
+      "action": "conversion",
+      "value": "33.8 Fahrenheit",
+      "note": "1 Celsius = 33.8 Fahrenheit",
+      "ts": "4/3/2026, 11:10:20 AM",
+      "id": 1
+    },
+    {
+      "userId": 1,
+      "type": "volume",
+      "action": "arithmetic",
+      "value": "0.2644363 Gallon",
+      "note": "(1 Liter) + (1 Milliliter) = 0.2644363 Gallon",
+      "ts": "4/3/2026, 11:10:33 AM",
+      "id": 2
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "quantity-measurement-json-server",
+  "version": "1.0.0",
+  "description": "Quantity Measurement app with JSON Server backend",
+  "scripts": {
+    "start": "json-server db.json --port 3000 --static ."
+  },
+  "devDependencies": {
+    "json-server": "^0.17.4"
+  }
+}
