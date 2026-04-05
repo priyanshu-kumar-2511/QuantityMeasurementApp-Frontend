@@ -1,0 +1,89 @@
+<div class="history-page">
+
+  <div class="header">
+    <button type="button" class="back-btn" (click)="goBack()">← Back</button>
+    <span class="user-greeting">Hi, {{ userName }}</span>
+    <h1>Calculation History</h1>
+    <button type="button" class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+
+  <div class="history-body">
+
+    <!-- FILTERS -->
+    <div class="filter-bar">
+      <input
+        type="text"
+        class="filter-input"
+        placeholder="Search results..."
+        [(ngModel)]="searchText"
+        (ngModelChange)="applyFilters()"
+      />
+      <select class="filter-select" [(ngModel)]="selectedOperation" (ngModelChange)="applyFilters()">
+        <option value="">All Operations</option>
+        <option *ngFor="let op of operations" [value]="op">{{ op }}</option>
+      </select>
+      <select class="filter-select" [(ngModel)]="selectedType" (ngModelChange)="applyFilters()">
+        <option value="">All Types</option>
+        <option *ngFor="let t of types" [value]="t">{{ typeLabels[t] }}</option>
+      </select>
+      <button type="button" class="clear-filter-btn" (click)="clearFilters()">Clear Filters</button>
+      <button type="button" class="refresh-btn" (click)="loadAll()">🔄 Refresh</button>
+      <button type="button" class="delete-all-btn" (click)="deleteAll()">🗑️ Delete All</button>
+    </div>
+
+    <!-- LOADING -->
+    <div class="loading-state" *ngIf="loading">
+      <div class="spinner-wrap">⏳ Loading history from server...</div>
+    </div>
+
+    <!-- ERROR -->
+    <div class="error-state" *ngIf="errorMsg && !loading">⚠ {{ errorMsg }}</div>
+
+    <!-- EMPTY -->
+    <div class="empty-state" *ngIf="!loading && !errorMsg && filtered.length === 0">
+      <div class="empty-icon">📋</div>
+      <div class="empty-text">No history records found.</div>
+      <div class="empty-sub">Perform some calculations to see them here.</div>
+    </div>
+
+    <!-- COUNT -->
+    <div class="records-count" *ngIf="!loading && filtered.length > 0">
+      Showing {{ filtered.length }} of {{ records.length }} records
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrap" *ngIf="!loading && filtered.length > 0">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Operation</th>
+            <th>Type</th>
+            <th>Input</th>
+            <th>Result</th>
+            <th>Time</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of filtered; let i = index" [class.error-row]="item.isError">
+            <td class="idx-cell">{{ i + 1 }}</td>
+            <td>
+              <span class="op-badge" [ngClass]="'op-' + (item.displayOp || '').toLowerCase()">
+                {{ item.displayOp }}
+              </span>
+            </td>
+            <td><span class="type-badge">{{ item.displayType }}</span></td>
+            <td class="input-cell">{{ item.displayInput }}</td>
+            <td class="result-cell" [class.error-result]="item.isError">{{ item.displayResult }}</td>
+            <td class="time-cell">{{ item.displayTime }}</td>
+            <td>
+              <button class="delete-row-btn" (click)="deleteById(item.id)" title="Delete">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

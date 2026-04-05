@@ -1,0 +1,73 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="auth-left">
+      <img src="Icon.jpeg" alt="QM Logo" class="brand-img" />
+      <div class="brand">QUANTITY<br>MEASUREMENT</div>
+    </div>
+
+    <div class="auth-right">
+      <div class="tabs">
+        <button type="button" class="tab-btn" routerLink="/login">LOGIN</button>
+        <button type="button" class="tab-btn active">SIGNUP</button>
+      </div>
+
+      <div class="success-banner" *ngIf="successMsg">✅ {{ successMsg }}</div>
+
+      <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)" novalidate>
+
+        <div class="field-label">Full Name</div>
+        <div class="input-wrap">
+          <span class="icon">👤</span>
+          <input type="text" name="name" placeholder="Full Name"
+            [(ngModel)]="name" required minlength="2"
+            #nameField="ngModel" [class.input-error]="nameField.invalid && nameField.touched" />
+        </div>
+        <div class="field-error" *ngIf="nameField.invalid && nameField.touched">Full name is required.</div>
+
+        <div class="field-label">Mobile No.</div>
+        <div class="input-wrap">
+          <span class="icon">📞</span>
+          <input type="tel" name="mobile" placeholder="10-digit mobile number"
+            [(ngModel)]="mobile" required pattern="[0-9]{10}"
+            #mobileField="ngModel" [class.input-error]="mobileField.invalid && mobileField.touched" />
+        </div>
+        <div class="field-error" *ngIf="mobileField.invalid && mobileField.touched">
+          Mobile number must be exactly 10 digits.
+        </div>
+
+        <div class="field-label">Email Id</div>
+        <div class="input-wrap">
+          <span class="icon">✉</span>
+          <input type="email" name="email" placeholder="Email Id"
+            [(ngModel)]="email" required email
+            #emailField="ngModel" [class.input-error]="emailField.invalid && emailField.touched" />
+        </div>
+        <div class="field-error" *ngIf="emailField.invalid && emailField.touched">Enter a valid email address.</div>
+
+        <div class="field-label">Password</div>
+        <div class="input-wrap">
+          <span class="icon">🔒</span>
+          <input type="password" name="password" placeholder="Min 8 chars, upper, lower, number, special"
+            [(ngModel)]="password" required minlength="8"
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$"
+            #passField="ngModel" [class.input-error]="passField.invalid && passField.touched" />
+        </div>
+        <div class="field-error" *ngIf="passField.invalid && passField.touched">
+          Min 8 chars with uppercase, lowercase, number &amp; special character.
+        </div>
+
+        <div class="api-error" *ngIf="errorMsg">⚠ {{ errorMsg }}</div>
+
+        <button type="submit" class="submit-btn" [disabled]="loading">
+          {{ loading ? 'Creating account...' : 'Signup' }}
+        </button>
+
+        <div class="switch-link">
+          Already have an account? <a routerLink="/login">Login</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

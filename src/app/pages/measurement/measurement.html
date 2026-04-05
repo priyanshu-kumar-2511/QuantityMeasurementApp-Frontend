@@ -1,0 +1,133 @@
+<div class="dashboard-page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="user-greeting">Hi, {{ userName }}</span>
+    <h1>Welcome To Quantity Measurement</h1>
+    <div class="header-right">
+      <button type="button" class="history-nav-btn" (click)="goToHistory()">📋 History</button>
+      <button type="button" class="history-nav-btn" (click)="router.navigate(['/dashboard'])">📊 Dashboard</button>
+      <button type="button" class="logout-btn" (click)="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="dash-body">
+
+    <!-- TYPE SELECTOR -->
+    <div class="section-label">Choose Type</div>
+    <div class="type-grid">
+      <div
+        *ngFor="let t of types"
+        class="type-card"
+        [class.active]="selectedType === t"
+        (click)="selectType(t)"
+      >
+        <span class="type-icon">{{ typeIcons[t] }}</span>
+        <span>{{ typeLabels[t] }}</span>
+      </div>
+    </div>
+
+    <!-- ACTION TABS -->
+    <div class="section-label">Choose Action</div>
+    <div class="action-tabs">
+      <button type="button" class="action-tab"
+        [class.active]="selectedAction === 'comparison'"
+        (click)="selectAction('comparison')">Comparison</button>
+      <button type="button" class="action-tab"
+        [class.active]="selectedAction === 'conversion'"
+        (click)="selectAction('conversion')">Conversion</button>
+      <button type="button" class="action-tab"
+        [class.active]="selectedAction === 'arithmetic'"
+        (click)="selectAction('arithmetic')">Arithmetic</button>
+    </div>
+
+    <!-- COMPARISON / CONVERSION PANEL -->
+    <div class="calc-area" *ngIf="isDualPanel">
+      <div class="calc-box">
+        <div class="calc-box-label">{{ selectedAction === 'conversion' ? 'FROM' : 'VALUE 1' }}</div>
+        <input type="number" [(ngModel)]="valFrom" />
+        <select [(ngModel)]="unitFrom">
+          <option *ngFor="let u of currentUnits" [value]="u">{{ u }}</option>
+        </select>
+      </div>
+      <div class="calc-box">
+        <div class="calc-box-label">{{ selectedAction === 'conversion' ? 'TO' : 'VALUE 2' }}</div>
+        <input type="number" [(ngModel)]="valTo" [readonly]="selectedAction === 'conversion'" />
+        <select [(ngModel)]="unitTo">
+          <option *ngFor="let u of currentUnits" [value]="u">{{ u }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ARITHMETIC PANEL -->
+    <div class="arith-area" *ngIf="!isDualPanel">
+      <div class="arith-row">
+        <div class="arith-input-group">
+          <label class="arith-label">Value 1</label>
+          <input class="arith-input" type="number" [(ngModel)]="arithA" placeholder="Value 1" />
+          <select class="arith-unit-select" [(ngModel)]="arithUnitA">
+            <option *ngFor="let u of currentUnits" [value]="u">{{ u }}</option>
+          </select>
+        </div>
+
+        <div class="arith-op-wrap">
+          <label class="arith-label">Op</label>
+          <select class="arith-op-select" [(ngModel)]="arithOp">
+            <option value="+">+</option>
+            <option value="-">−</option>
+            <option value="*">×</option>
+            <option value="/">÷</option>
+          </select>
+        </div>
+
+        <div class="arith-input-group">
+          <label class="arith-label">Value 2</label>
+          <input class="arith-input" type="number" [(ngModel)]="arithB" placeholder="Value 2" />
+          <select class="arith-unit-select" [(ngModel)]="arithUnitB">
+            <option *ngFor="let u of currentUnits" [value]="u">{{ u }}</option>
+          </select>
+        </div>
+
+        <div class="arith-result-unit-wrap">
+          <label class="arith-label">Result in</label>
+          <select class="arith-unit-select arith-result-unit" [(ngModel)]="arithUnitResult">
+            <option *ngFor="let u of currentUnits" [value]="u">{{ u }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- API ERROR -->
+    <div class="api-error-banner" *ngIf="apiError">
+      ⚠ {{ apiError }}
+    </div>
+
+    <!-- ACTION BUTTON -->
+    <button type="button" class="action-btn" (click)="calculate()" [disabled]="loading">
+      <span *ngIf="!loading">{{ actionButtonLabel }}</span>
+      <span *ngIf="loading" class="spinner">⏳ Loading...</span>
+    </button>
+
+    <!-- RESULT BOX -->
+    <div class="result-box" [class.show]="showResult">
+      <div class="result-label">Result</div>
+      <div class="result-value">{{ resultValue }}</div>
+      <div class="result-note">{{ resultNote }}</div>
+    </div>
+
+    <!-- HISTORY PANEL -->
+    <div class="history-header" [class.visible]="historyList.length > 0">
+      <div class="history-title">📋 Calculation History</div>
+      <button type="button" class="history-clear-btn" (click)="clearHistory()">Clear All</button>
+    </div>
+
+    <div class="history-list">
+      <div class="history-item" *ngFor="let item of historyList">
+        <span class="hist-badge">{{ item.type }} - {{ item.action }}</span>
+        <span class="hist-value">{{ item.value }}</span>
+        <span class="hist-note">{{ item.ts }}</span>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <!-- Left branding panel -->
+    <div class="auth-left">
+      <img src="Icon.jpeg" alt="QM Logo" class="brand-img" />
+      <div class="brand">QUANTITY<br>MEASUREMENT</div>
+    </div>
+
+    <!-- Right form panel -->
+    <div class="auth-right">
+      <div class="tabs">
+        <button type="button" class="tab-btn active">LOGIN</button>
+        <button type="button" class="tab-btn" routerLink="/signup">SIGNUP</button>
+      </div>
+
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate>
+
+        <div class="field-label">Email Id</div>
+        <div class="input-wrap">
+          <span class="icon">✉</span>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Id"
+            [(ngModel)]="email"
+            required
+            email
+            #emailField="ngModel"
+            [class.input-error]="emailField.invalid && emailField.touched"
+          />
+        </div>
+        <div class="field-error" *ngIf="emailField.invalid && emailField.touched">
+          Enter a valid email address.
+        </div>
+
+        <div class="field-label">Password</div>
+        <div class="input-wrap">
+          <span class="icon">🔒</span>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            [(ngModel)]="password"
+            required
+            #passwordField="ngModel"
+            [class.input-error]="passwordField.invalid && passwordField.touched"
+          />
+        </div>
+        <div class="field-error" *ngIf="passwordField.invalid && passwordField.touched">
+          Password is required.
+        </div>
+
+        <!-- API error -->
+        <div class="api-error" *ngIf="errorMsg">⚠ {{ errorMsg }}</div>
+
+        <div class="forgot" routerLink="/forgot-password">Forgot password?</div>
+        
+        <button type="submit" class="submit-btn" [disabled]="loading">
+          {{ loading ? 'Logging in...' : 'Login' }}
+        </button>
+
+        <div class="switch-link">
+          Don't have an account?
+          <a routerLink="/signup">Signup</a>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>
