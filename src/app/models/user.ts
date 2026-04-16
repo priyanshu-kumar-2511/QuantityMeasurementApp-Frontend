@@ -9,7 +9,7 @@ export interface SignUpRequest {
   firstName: string;
   lastName: string;
   email: string;
-  mobile: string;
+  mobileNo: string;
   password: string;
 }
 

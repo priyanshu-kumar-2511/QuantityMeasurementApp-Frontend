@@ -36,7 +36,7 @@ export class SignupComponent {
       .signup({
         firstName,
         lastName,
-        mobile: this.mobile,
+        mobileNo: this.mobile,
         email: this.email,
         password: this.password,
       })
@@ -54,5 +54,9 @@ export class SignupComponent {
             'Registration failed. Please try again.';
         },
       });
+  }
+
+  loginWithGoogle(): void {
+    this.authService.loginWithGoogle();
   }
 }
