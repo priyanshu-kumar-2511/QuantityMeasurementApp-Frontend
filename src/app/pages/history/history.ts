@@ -83,14 +83,33 @@ export class HistoryComponent implements OnInit {
   }
 
   private mapRecord(item: any, op: string): HistoryRecord {
-    console.log('Item:', item); 
     const type = item.thisMeasurementType || item.measurementType || item.thatMeasurementType || '';
     const typeLabel = MEASUREMENT_LABELS[type] || type || '—';
-    const input =
-      `${item.thisValue ?? ''} ${item.thisUnit ?? ''} / ${item.thatValue ?? ''} ${item.thatUnit ?? ''}`.trim();
-    const result = item.isError
-      ? '⚠ Error'
-      : `${item.resultValue ?? ''} ${item.resultUnit ?? ''}`.trim() || '—';
+
+    // For COMPARE: Use the exact relation string sent by the backend
+    let input: string;
+    let result: string;
+
+    if (op === 'COMPARE') {
+      input = `${item.thisValue ?? ''} ${item.thisUnit ?? ''} vs ${item.thatValue ?? ''} ${item.thatUnit ?? ''}`;
+      
+      const sym = item.resultString || '=';
+      
+      // Since it explicitly evaluated the relation, the resulting statement is true.
+      result = 'true';
+      
+      input = `${item.thisValue ?? ''} ${item.thisUnit ?? ''} ${sym} ${item.thatValue ?? ''} ${item.thatUnit ?? ''}`;
+      
+    } else {
+      input = `${item.thisValue ?? ''} ${item.thisUnit ?? ''} / ${item.thatValue ?? ''} ${item.thatUnit ?? ''}`.trim();
+      if (item.isError) {
+        result = '⚠ Error';
+      } else {
+        result = `${item.resultValue ?? ''} ${item.resultUnit ?? ''}`.trim() || '—';
+      }
+    }
+
+    // Backend time is now correctly localized to IST via docker-compose (TZ=Asia/Kolkata)
     const time = item.createdAt ? new Date(item.createdAt).toLocaleString() : '—';
 
     return {

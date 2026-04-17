@@ -133,13 +133,16 @@ export class MeasurementComponent implements OnInit {
     this.measurementService.compare(body).subscribe({
       next: (res: any) => {
         this.loading = false;
-        // Backend response: resultString field use karo
-        const resultStr = res.resultString || '';
-        const eq = res.resultValue === true || resultStr.includes('=');
-        const sym = eq ? '=' : (this.valFrom > this.valTo ? '>' : '<');
+        // Backend now returns the EXACT relation '=', '<', or '>' in resultString
+        const sym = res.resultString || '=';
         this.resultValue = `${this.valFrom} ${this.unitFrom} ${sym} ${this.valTo} ${this.unitTo}`;
-        this.resultNote = resultStr || (eq ? 'Both values are equal.' : 'Values are not equal.');
+        
+        // Since we explicitly find the exact mathematical relation (=, <, >),
+        // the generated statement (e.g. 1 FEET = 12 INCHES) is factually TRUE.
+        this.resultNote = 'true';
         this.showResult = true;
+        
+        // Save 'sym' directly to history tracking
         this.addToHistory('comparison', this.resultValue, this.resultNote);
       },
       error: (err: any) => this.handleError(err),
